@@ -29,12 +29,9 @@ export function Navbar({ isDark, onThemeToggle }: NavbarProps) {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-            >
+            <div className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent group-hover:scale-105 transition-transform">
               ⚡ QuizMaster
-            </motion.div>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
