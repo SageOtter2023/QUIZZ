@@ -237,13 +237,14 @@ export default function QuizSelection() {
                     </div>
 
                     {/* Button */}
-                    <button
+                    <motion.button
+                      whileHover={{ gap: 12 }}
                       onClick={() => handleStartQuiz(quiz.id)}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-colors group-hover:gap-3"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-colors"
                     >
                       Start Quiz
-                      <ArrowRight className="h-4 w-4 transition-transform" />
-                    </button>
+                      <ArrowRight className="h-4 w-4" />
+                    </motion.button>
                   </div>
                 </motion.div>
               ))}
