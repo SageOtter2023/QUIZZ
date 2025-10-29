@@ -230,15 +230,17 @@ export default function Home() {
             Join thousands of learners who are already improving their performance with QuizMaster Pro.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/quizzes">
-              <Button
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-14 gap-2 group"
-              >
-                Start Your First Quiz
-                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
+            <div>
+              <Link to="/quizzes">
+                <Button
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-14 gap-2 group"
+                >
+                  Start Your First Quiz
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
             <Button
               size="lg"
               variant="outline"
