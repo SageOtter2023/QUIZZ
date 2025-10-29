@@ -108,27 +108,30 @@ export default function Home() {
           </motion.div>
 
           {/* CTA Buttons */}
-          <motion.div
-            variants={itemVariants}
+          <div
             className="flex flex-col sm:flex-row gap-4 justify-center pt-4"
           >
-            <Link to="/quizzes">
+            <motion.div variants={itemVariants}>
+              <Link to="/quizzes">
+                <Button
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-14 gap-2 group"
+                >
+                  Start Practicing
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </motion.div>
+            <motion.div variants={itemVariants}>
               <Button
                 size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-14 gap-2 group"
+                variant="outline"
+                className="text-lg h-14 border-2 border-primary text-primary hover:bg-primary/10"
               >
-                Start Practicing
-                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                Try Demo Quiz
               </Button>
-            </Link>
-            <Button
-              size="lg"
-              variant="outline"
-              className="text-lg h-14 border-2 border-primary text-primary hover:bg-primary/10"
-            >
-              Try Demo Quiz
-            </Button>
-          </motion.div>
+            </motion.div>
+          </div>
 
           {/* Stats */}
           <motion.div
