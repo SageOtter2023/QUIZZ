@@ -212,11 +212,11 @@ export default function QuizSelection() {
                     <div className="space-y-4">
                       <div className="flex items-start justify-between">
                         <div className="text-5xl">{quiz.icon}</div>
-                        <motion.div
-                          className={`inline-block px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${difficultyColors[quiz.difficulty]} bg-clip-text text-transparent border border-current/20`}
-                        >
-                          {quiz.difficulty}
-                        </motion.div>
+                        <div
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${difficultyColors[quiz.difficulty]} bg-clip-text text-transparent border border-current/20`}
+                      >
+                        {quiz.difficulty}
+                      </div>
                       </div>
                       <div>
                         <h3 className="text-xl font-bold mb-2">{quiz.title}</h3>
