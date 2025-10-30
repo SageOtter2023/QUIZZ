@@ -200,6 +200,35 @@ export async function mockFetch(
   };
 }
 
+// Create a response-like object that mimics the Fetch API Response
+class MockResponse {
+  status: number;
+  ok: boolean;
+  statusText: string;
+  headers: Headers;
+  private jsonCache: any;
+
+  constructor(jsonData: any, status: number = 200) {
+    this.status = status;
+    this.ok = status >= 200 && status < 300;
+    this.statusText = this.ok ? 'OK' : 'Error';
+    this.headers = new Headers({ 'content-type': 'application/json' });
+    this.jsonCache = jsonData;
+  }
+
+  async json() {
+    return this.jsonCache;
+  }
+
+  async text() {
+    return JSON.stringify(this.jsonCache);
+  }
+
+  clone() {
+    return new MockResponse(this.jsonCache, this.status);
+  }
+}
+
 // Wrapper to use mock or real API
 export async function fetchWithMock(
   endpoint: string,
@@ -208,17 +237,7 @@ export async function fetchWithMock(
   if (USE_MOCK_API) {
     const mockResponse = await mockFetch(endpoint, options);
     const jsonData = await mockResponse.json();
-
-    // Create a Response with a Blob body to ensure proper streaming behavior
-    const blob = new Blob([JSON.stringify(jsonData)], { type: 'application/json' });
-
-    return new Response(blob, {
-      status: mockResponse.status,
-      statusText: mockResponse.ok ? 'OK' : 'Error',
-      headers: new Headers({
-        'content-type': 'application/json',
-      }),
-    });
+    return new MockResponse(jsonData, mockResponse.status) as any as Response;
   }
 
   return fetch(endpoint, options);
