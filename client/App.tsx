@@ -150,14 +150,12 @@ function AppContent() {
 const rootElement = document.getElementById("root");
 
 if (rootElement) {
-  // Check if a root was already created on this element
-  const existingRoot = (rootElement as any)._reactRootContainer;
+  createRoot(rootElement).render(<AppContent />);
+}
 
-  if (existingRoot) {
-    // Use existing root for HMR updates
-    existingRoot.render(<AppContent />);
-  } else {
-    // Create new root for initial load
-    createRoot(rootElement).render(<AppContent />);
-  }
+// Handle HMR in development
+if (import.meta.hot) {
+  import.meta.hot.accept(() => {
+    // HMR will automatically re-render through React's fast refresh
+  });
 }
