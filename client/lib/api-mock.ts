@@ -209,14 +209,15 @@ export async function fetchWithMock(
     const mockResponse = await mockFetch(endpoint, options);
     const jsonData = await mockResponse.json();
 
-    // Create a proper Response object with the JSON data
-    // This allows the body to be read multiple times without issues
-    return new Response(JSON.stringify(jsonData), {
+    // Create a Response with a Blob body to ensure proper streaming behavior
+    const blob = new Blob([JSON.stringify(jsonData)], { type: 'application/json' });
+
+    return new Response(blob, {
       status: mockResponse.status,
       statusText: mockResponse.ok ? 'OK' : 'Error',
-      headers: {
+      headers: new Headers({
         'content-type': 'application/json',
-      },
+      }),
     });
   }
 
