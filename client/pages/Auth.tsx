@@ -99,13 +99,14 @@ export default function Auth() {
         setShowRateLimit(true);
         toast.error('Too many login attempts. Please try again later.');
         setFailedAttempts(0);
+        setIsSubmitting(false);
         return;
       }
 
       if (response.status === 401) {
         const newAttempts = failedAttempts + 1;
         setFailedAttempts(newAttempts);
-        
+
         if (newAttempts >= 3) {
           setShowRateLimit(true);
         }
@@ -114,15 +115,32 @@ export default function Auth() {
           general: 'Invalid email or password',
         });
         toast.error('Invalid email or password');
+        setIsSubmitting(false);
         return;
       }
 
       if (!response.ok) {
         toast.error('Login failed. Please try again.');
+        setIsSubmitting(false);
         return;
       }
 
-      const { token, user } = await response.json();
+      let responseData;
+      try {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          responseData = await response.json();
+        } else {
+          throw new Error('Invalid response type');
+        }
+      } catch (parseError) {
+        console.error('Failed to parse login response:', parseError);
+        toast.error('Invalid server response');
+        setIsSubmitting(false);
+        return;
+      }
+
+      const { token, user } = responseData;
 
       // Store token
       if (formData.rememberMe) {
