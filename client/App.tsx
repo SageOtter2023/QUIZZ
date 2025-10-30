@@ -147,7 +147,22 @@ function AppContent() {
   );
 }
 
-const rootElement = document.getElementById("root");
-if (rootElement && !rootElement.__reactRootContainer) {
-  createRoot(rootElement).render(<AppContent />);
+// Create root only once at module level
+let root: any = null;
+
+function initializeApp() {
+  if (!root) {
+    const rootElement = document.getElementById("root");
+    if (rootElement) {
+      root = createRoot(rootElement);
+      root.render(<AppContent />);
+    }
+  }
+}
+
+// Initialize on page load
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializeApp);
+} else {
+  initializeApp();
 }
