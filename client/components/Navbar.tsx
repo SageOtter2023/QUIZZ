@@ -13,6 +13,13 @@ interface NavbarProps {
 export function Navbar({ isDark, onThemeToggle }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('qm_token') || sessionStorage.getItem('qm_token');
+    setIsAuthenticated(!!token);
+  }, [location]);
 
   const navItems = [
     { label: 'Home', href: '/' },
@@ -20,6 +27,15 @@ export function Navbar({ isDark, onThemeToggle }: NavbarProps) {
     { label: 'Dashboard', href: '/dashboard' },
     { label: 'Feedback', href: '/feedback' },
   ];
+
+  const handleLogout = () => {
+    localStorage.removeItem('qm_token');
+    localStorage.removeItem('qm_user');
+    sessionStorage.removeItem('qm_token');
+    setIsAuthenticated(false);
+    navigate('/');
+    setIsOpen(false);
+  };
 
   const isActive = (path: string) => location.pathname === path;
 
