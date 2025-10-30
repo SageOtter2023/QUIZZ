@@ -87,11 +87,22 @@ export function Navbar({ isDark, onThemeToggle }: NavbarProps) {
 
             {/* Auth Button (Desktop) */}
             <div className="hidden md:block">
-              <Link to="/auth">
-                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                  Login
+              {isAuthenticated ? (
+                <Button
+                  onClick={handleLogout}
+                  variant="outline"
+                  className="gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
                 </Button>
-              </Link>
+              ) : (
+                <Link to="/auth">
+                  <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                    Login
+                  </Button>
+                </Link>
+              )}
             </div>
 
             {/* Mobile Menu Toggle */}
