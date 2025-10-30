@@ -147,22 +147,17 @@ function AppContent() {
   );
 }
 
-// Create root only once at module level
-let root: any = null;
+const rootElement = document.getElementById("root");
 
-function initializeApp() {
-  if (!root) {
-    const rootElement = document.getElementById("root");
-    if (rootElement) {
-      root = createRoot(rootElement);
-      root.render(<AppContent />);
-    }
+if (rootElement) {
+  // Check if a root was already created on this element
+  const existingRoot = (rootElement as any)._reactRootContainer;
+
+  if (existingRoot) {
+    // Use existing root for HMR updates
+    existingRoot.render(<AppContent />);
+  } else {
+    // Create new root for initial load
+    createRoot(rootElement).render(<AppContent />);
   }
-}
-
-// Initialize on page load
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initializeApp);
-} else {
-  initializeApp();
 }
