@@ -147,14 +147,26 @@ export function Navbar({ isDark, onThemeToggle }: NavbarProps) {
                   </Button>
                 </Link>
               ))}
-              <Link
-                to="/auth"
-                onClick={() => setIsOpen(false)}
-              >
-                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                  Login
+              {isAuthenticated ? (
+                <Button
+                  onClick={() => {
+                    handleLogout();
+                  }}
+                  className="w-full bg-destructive/10 hover:bg-destructive/20 text-destructive gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
                 </Button>
-              </Link>
+              ) : (
+                <Link
+                  to="/auth"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                    Login
+                  </Button>
+                </Link>
+              )}
             </div>
           </motion.div>
         )}
