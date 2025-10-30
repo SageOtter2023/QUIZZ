@@ -191,17 +191,29 @@ export default function Feedback() {
         setRateResetTime(60);
         submitDisabledUntil.current = now + 65000;
         toast.error('You\'re sending feedback too fast. Try again later.');
+        setIsSubmitting(false);
         return;
       }
 
+      // Try to parse JSON only if response has content
+      let responseData: any = null;
+      try {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          responseData = await response.json();
+        }
+      } catch (parseError) {
+        console.warn('Could not parse response as JSON:', parseError);
+      }
+
       if (!response.ok) {
-        const data = await response.json();
-        if (data.fieldErrors) {
-          setErrors(data.fieldErrors);
+        if (responseData?.fieldErrors) {
+          setErrors(responseData.fieldErrors);
           toast.error('Please fix the errors above');
         } else {
           toast.error('Server error — try again later.');
         }
+        setIsSubmitting(false);
         return;
       }
 
@@ -209,7 +221,7 @@ export default function Feedback() {
       setSubmitted(true);
       clearDraft();
       toast.success('Thanks! Your feedback was submitted.');
-      
+
       // Reset form after delay
       setTimeout(() => {
         setFormData({
@@ -225,10 +237,10 @@ export default function Feedback() {
 
       // Disable submit for 5 seconds
       submitDisabledUntil.current = now + 5000;
+      setIsSubmitting(false);
     } catch (error) {
       console.error('Feedback submission error:', error);
       toast.error('Network error — please try again');
-    } finally {
       setIsSubmitting(false);
     }
   };
