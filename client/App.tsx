@@ -101,6 +101,14 @@ function AppContent() {
               }
             />
             <Route
+              path="/signup"
+              element={
+                <Layout isDark={isDark} onThemeToggle={handleThemeToggle}>
+                  <Auth />
+                </Layout>
+              }
+            />
+            <Route
               path="/profile"
               element={
                 <Layout isDark={isDark} onThemeToggle={handleThemeToggle}>
