@@ -207,33 +207,17 @@ export async function fetchWithMock(
 ): Promise<Response> {
   if (USE_MOCK_API) {
     const mockResponse = await mockFetch(endpoint, options);
+    const jsonData = await mockResponse.json();
 
-    // Cache the JSON data to avoid body stream issues
-    let cachedData: any = null;
-    const getJsonData = async () => {
-      if (cachedData === null) {
-        cachedData = await mockResponse.json();
-      }
-      return cachedData;
-    };
-
-    return {
+    // Create a proper Response object with the JSON data
+    // This allows the body to be read multiple times without issues
+    return new Response(JSON.stringify(jsonData), {
       status: mockResponse.status,
-      ok: mockResponse.ok,
-      headers: new Headers({ 'content-type': 'application/json' }),
       statusText: mockResponse.ok ? 'OK' : 'Error',
-      url: endpoint,
-      redirected: false,
-      type: 'basic' as ResponseType,
-      json: getJsonData,
-      text: async () => JSON.stringify(await getJsonData()),
-      clone: function() {
-        return this;
+      headers: {
+        'content-type': 'application/json',
       },
-      arrayBuffer: async () => new ArrayBuffer(0),
-      blob: async () => new Blob(),
-      formData: async () => new FormData(),
-    } as Response;
+    });
   }
 
   return fetch(endpoint, options);
